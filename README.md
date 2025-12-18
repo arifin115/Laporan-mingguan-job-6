@@ -1,4 +1,4 @@
-Laporan Mingguan Job 6
+  Laporan Mingguan Job 6
 
 Nama: Arifin Ilham
 NPM: 2410017514006
