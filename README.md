@@ -1,4 +1,4 @@
-  Laporan Mingguan Job 6
+Laporan Mingguan Job 6
 
 Nama: Arifin Ilham
 NPM: 2410017514006
@@ -12,13 +12,11 @@ Mata Kuliah: LAB IV Basic Analog Electronic
 
 Tujuan dari praktikum ini adalah untuk:
 
-Mengetahui cara kerja sensor cahaya LDR (Light Dependent Resistor).
+Mengetahui prinsip kerja display seven segment.
 
-Memahami cara kerja Arduino dalam membaca intensitas cahaya melalui LDR.
+Memahami cara menghubungkan seven segment dengan Arduino Uno.
 
-Menguji hubungan antara perubahan cahaya dengan nilai tegangan output sensor LDR.
-
-Menampilkan hasil pembacaan sensor LDR pada Serial Monitor Arduino.
+Menampilkan angka pada seven segment menggunakan kode program Arduino.
 
 
 
@@ -26,31 +24,32 @@ Menampilkan hasil pembacaan sensor LDR pada Serial Monitor Arduino.
 
 2. Teori
 
-LDR (Light Dependent Resistor) adalah resistor yang nilai hambatannya berubah sesuai dengan intensitas cahaya yang diterimanya. Semakin besar cahaya yang diterima, maka hambatannya semakin kecil. Sebaliknya, jika cahaya yang diterima berkurang, hambatannya meningkat.
+Seven Segment Display (SSD) adalah komponen elektronik yang terdiri dari tujuh buah LED (segment) yang tersusun membentuk angka 8. Dengan menyalakan kombinasi segmen tertentu, kita dapat menampilkan angka 0–9 atau huruf tertentu.
 
-LDR banyak digunakan dalam sistem otomatis seperti lampu taman otomatis, alarm cahaya, dan sistem penghemat energi.
+Setiap segmen diberi label dari a hingga g. Tipe seven segment terbagi menjadi dua:
 
-Karakteristik LDR:
-
-Hambatan tinggi pada kondisi gelap (hingga megaohm).
-
-Hambatan rendah pada kondisi terang (beberapa kiloohm).
-
-Bersifat non-linear (respon tidak selalu proporsional terhadap intensitas cahaya).
+1. Common Cathode (CC) – semua kaki negatif LED disatukan menjadi ground.
 
 
-Prinsip Kerja:
-
-LDR dihubungkan dalam rangkaian pembagi tegangan dengan resistor tetap.
-
-Tegangan output dari titik tengah pembagi tegangan dibaca oleh pin analog Arduino.
-
-Nilai tegangan ini digunakan untuk menentukan tingkat pencahayaan.
+2. Common Anode (CA) – semua kaki positif LED disatukan ke VCC (+5V).
 
 
-Rumus pembagi tegangan:
 
-V_{out} = V_{in} \times \frac{R_{LDR}}{R_{LDR} + R_{fixed}}
+Prinsip kerja seven segment adalah menyalakan kombinasi LED tertentu sesuai dengan angka yang ingin ditampilkan. Arduino akan mengatur kondisi HIGH atau LOW pada pin yang terhubung ke masing-masing segmen.
+
+Angka	Segmen yang Menyala
+
+0	a, b, c, d, e, f
+1	b, c
+2	a, b, d, e, g
+3	a, b, c, d, g
+4	b, c, f, g
+5	a, c, d, f, g
+6	a, c, d, e, f, g
+7	a, b, c
+8	a, b, c, d, e, f, g
+9	a, b, c, d, f, g
+
 
 
 ---
@@ -59,17 +58,17 @@ V_{out} = V_{in} \times \frac{R_{LDR}}{R_{LDR} + R_{fixed}}
 
 Laptop
 
-Board Arduino Uno
+Arduino Uno
 
 Breadboard
 
 Kabel jumper
 
-Sensor LDR
+Seven Segment Display (1 digit)
 
-Resistor 10kΩ
+Resistor 220Ω – 330Ω (7 buah)
 
-Kabel USB Arduino
+Kabel USB
 
 
 
@@ -77,38 +76,46 @@ Kabel USB Arduino
 
 4. Rangkaian Praktikum
 
-Konfigurasi Pin LDR:
+Rangkaian terdiri dari satu buah seven segment yang dihubungkan dengan pin digital Arduino.
+Setiap segmen dihubungkan melalui resistor pembatas arus ke pin digital Arduino.
 
-Salah satu kaki LDR dihubungkan ke VCC (5V)
+Contoh koneksi pin (Common Cathode):
 
-Kaki lainnya dihubungkan ke pin A0 Arduino dan resistor 10kΩ
+Segmen	Pin Arduino
 
-Ujung resistor 10kΩ dihubungkan ke GND
+a	2
+b	3
+c	4
+d	5
+e	6
+f	7
+g	8
+COM	GND
 
-
-Rangkaian ini membentuk pembagi tegangan, di mana tegangan tengah (Vout) akan berubah mengikuti intensitas cahaya yang diterima oleh LDR.
 
 
 ---
 
 5. Prosedur Praktikum
 
-1. Siapkan semua komponen: Arduino Uno, kabel USB, LDR, resistor 10kΩ, breadboard, dan kabel jumper.
+Langkah-langkah yang dilakukan dalam praktikum ini:
+
+1. Persiapkan alat dan bahan seperti Arduino Uno, seven segment, resistor, kabel jumper, dan breadboard.
 
 
-2. Rangkai LDR dan resistor membentuk pembagi tegangan sesuai skema.
+2. Hubungkan setiap segmen seven segment ke pin Arduino melalui resistor sesuai tabel koneksi.
 
 
-3. Hubungkan pin tengah (Vout) ke pin analog A0 pada Arduino.
+3. Pastikan kaki COM dihubungkan ke GND (untuk Common Cathode).
 
 
-4. Buka Arduino IDE, lalu buat dan upload program pembacaan intensitas cahaya.
+4. Buka Arduino IDE dan ketik program untuk menyalakan angka 0–9 secara bergantian.
 
 
-5. Buka Serial Monitor untuk melihat hasil pembacaan nilai analog dari LDR.
+5. Upload program ke Arduino Uno menggunakan kabel USB.
 
 
-6. Uji sensor dengan menutup atau menyinari LDR untuk melihat perubahan nilai pembacaan.
+6. Amati hasil tampilan angka di seven segment display.
 
 
 
@@ -118,64 +125,74 @@ Rangkaian ini membentuk pembagi tegangan, di mana tegangan tengah (Vout) akan be
 6. Screenshot Prosedur Praktikum
 
 
+
+
 ![Image](https://github.com/user-attachments/assets/1087744c-847f-4f2a-9eae-187ff88a4948)
+
 
 
 ---
 
 7. Source Code Arduino
 
-Berikut contoh program untuk membaca intensitas cahaya dari sensor LDR dan menampilkannya pada Serial Monitor:
+Berikut contoh source code untuk menampilkan angka 0–9 secara bergantian pada seven segment:
 
-// Deklarasi pin untuk LDR
-const int LDRPin = A0;
+// Deklarasi pin segmen seven segment
+int a = 2;
+int b = 3;
+int c = 4;
+int d = 5;
+int e = 6;
+int f = 7;
+int g = 8;
 
 void setup() {
-  // Memulai komunikasi serial dengan baud rate 9600
-  Serial.begin(9600);
+  pinMode(a, OUTPUT);
+  pinMode(b, OUTPUT);
+  pinMode(c, OUTPUT);
+  pinMode(d, OUTPUT);
+  pinMode(e, OUTPUT);
+  pinMode(f, OUTPUT);
+  pinMode(g, OUTPUT);
 }
 
 void loop() {
-  // Membaca nilai analog dari pin A0
-  int sensorValue = analogRead(LDRPin);
+  tampil(0); delay(1000);
+  tampil(1); delay(1000);
+  tampil(2); delay(1000);
+  tampil(3); delay(1000);
+  tampil(4); delay(1000);
+  tampil(5); delay(1000);
+  tampil(6); delay(1000);
+  tampil(7); delay(1000);
+  tampil(8); delay(1000);
+  tampil(9); delay(1000);
+}
 
-  // Mengonversi nilai analog ke tegangan (0-5V)
-  float voltage = sensorValue * (5.0 / 1023.0);
+// Fungsi menyalakan kombinasi segmen
+void tampil(int angka) {
+  // Semua segmen mati dulu
+  digitalWrite(a, LOW);
+  digitalWrite(b, LOW);
+  digitalWrite(c, LOW);
+  digitalWrite(d, LOW);
+  digitalWrite(e, LOW);
+  digitalWrite(f, LOW);
+  digitalWrite(g, LOW);
 
-  // Menampilkan nilai sensor dan tegangan
-  Serial.print("Nilai LDR: ");
-  Serial.print(sensorValue);
-  Serial.print("  | Tegangan: ");
-  Serial.print(voltage);
-  Serial.println(" V");
-
-  // Jeda 1 detik sebelum pembacaan berikutnya
-  delay(1000);
+  switch (angka) {
+    case 0: digitalWrite(a, HIGH); digitalWrite(b, HIGH); digitalWrite(c, HIGH); digitalWrite(d, HIGH); digitalWrite(e, HIGH); digitalWrite(f, HIGH); break;
+    case 1: digitalWrite(b, HIGH); digitalWrite(c, HIGH); break;
+    case 2: digitalWrite(a, HIGH); digitalWrite(b, HIGH); digitalWrite(d, HIGH); digitalWrite(e, HIGH); digitalWrite(g, HIGH); break;
+    case 3: digitalWrite(a, HIGH); digitalWrite(b, HIGH); digitalWrite(c, HIGH); digitalWrite(d, HIGH); digitalWrite(g, HIGH); break;
+    case 4: digitalWrite(b, HIGH); digitalWrite(c, HIGH); digitalWrite(f, HIGH); digitalWrite(g, HIGH); break;
+    case 5: digitalWrite(a, HIGH); digitalWrite(c, HIGH); digitalWrite(d, HIGH); digitalWrite(f, HIGH); digitalWrite(g, HIGH); break;
+    case 6: digitalWrite(a, HIGH); digitalWrite(c, HIGH); digitalWrite(d, HIGH); digitalWrite(e, HIGH); digitalWrite(f, HIGH); digitalWrite(g, HIGH); break;
+    case 7: digitalWrite(a, HIGH); digitalWrite(b, HIGH); digitalWrite(c, HIGH); break;
+    case 8: digitalWrite(a, HIGH); digitalWrite(b, HIGH); digitalWrite(c, HIGH); digitalWrite(d, HIGH); digitalWrite(e, HIGH); digitalWrite(f, HIGH); digitalWrite(g, HIGH); break;
+    case 9: digitalWrite(a, HIGH); digitalWrite(b, HIGH); digitalWrite(c, HIGH); digitalWrite(d, HIGH); digitalWrite(f, HIGH); digitalWrite(g, HIGH); break;
+  }
 }
 
 
 ---
-
-8. Hasil Pengamatan
-
-Kondisi Cahaya	Nilai Analog	Tegangan (V)	Keterangan
-
-Terang	850	4.15	Cahaya kuat
-Redup	400	1.95	Cahaya sedang
-Gelap	100	0.49	Hampir tidak ada cahaya
-
-
-
----
-
-9. Kesimpulan
-
-Dari hasil praktikum ini dapat disimpulkan bahwa:
-
-Nilai output sensor LDR berubah sesuai dengan intensitas cahaya yang diterima.
-
-Semakin terang cahaya, semakin besar nilai output analog yang terbaca Arduino.
-
-Rangkaian LDR dan resistor bekerja sebagai pembagi tegangan yang responsif terhadap perubahan intensitas cahaya.
-
-Arduino dapat digunakan untuk mengukur intensitas cahaya dan menjadi dasar sistem otomatisasi berbasis sensor.
